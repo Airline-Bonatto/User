@@ -1,0 +1,79 @@
+# Build results
+[Dd]ebug/
+[Rr]elease/
+[xX]64/
+[xX]86/
+[Aa][rR][m]/
+[Aa][rR][m]64/
+build/
+out/
+
+# Visual Studio
+.vs/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Mono Auto Generated Files
+mono_crash.dump
+
+# Windows image file caches
+Thumbs.db
+ehthumbs.db
+
+# ASP.NET
+*.log
+
+# NuGet Packages
+*.nupkg
+# The packages folder can be ignored if it is not under source control
+**/packages/*
+!**/packages/build/
+!**/packages/repositories.config
+
+# Microsoft Azure Build Output
+csx/
+*.build.csdef
+
+# Others
+*.dbmdl
+*.bak
+*.sql
+*.pdb
+*.cache
+*.zip
+*.tar.gz
+*.tgz
+*.tar
+*.rar
+*.7z
+*.gz
+*.bin
+*.dll
+*.exe
+*.obj
+*.tmp
+*.vspscc
+*.vssscc
+*.vshost.*
+*.vscode/
+
+# Rider
+.idea/
+*.sln.iml
+
+# Dotnet
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# OS generated files
+.DS_Store
+*.swp
+
+# Ignore obj and bin folders
+obj/
+bin/
