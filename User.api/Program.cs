@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Npgsql;
 
+using User.api.Configuration;
 using User.api.Database;
 using User.api.Repositories;
 using User.api.Services;
@@ -24,8 +25,11 @@ builder.Services.AddTransient<IDbConnection>(sp =>
     return new NpgsqlConnection(cs);
 });
 
+builder.Services.Configure<JwtConfiguration>(builder.Configuration.GetSection("Jwt"));
+
 builder.Services.AddTransient<AirlineUserRepository>();
 builder.Services.AddTransient<AirlineUserCreateService>();
+builder.Services.AddTransient<AuthService>();
 
 
 WebApplication app = builder.Build();
