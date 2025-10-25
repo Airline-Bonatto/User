@@ -5,6 +5,8 @@ using Microsoft.EntityFrameworkCore;
 using Npgsql;
 
 using User.api.Database;
+using User.api.Repositories;
+using User.api.Services;
 
 WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
@@ -22,6 +24,8 @@ builder.Services.AddTransient<IDbConnection>(sp =>
     return new NpgsqlConnection(cs);
 });
 
+builder.Services.AddTransient<AirlineUserRepository>();
+builder.Services.AddTransient<AirlineUserCreateService>();
 
 
 WebApplication app = builder.Build();
