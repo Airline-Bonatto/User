@@ -1,10 +1,12 @@
 using FluentAssertions;
+
 using User.api.Database;
 using User.api.Models;
 using User.api.Repositories;
 using User.api.Requests;
 using User.api.Services;
 using User.Tests.Helpers;
+
 using Xunit;
 
 namespace User.Tests.Services;
@@ -23,7 +25,7 @@ public class AirlineUserCreateServiceTests : IDisposable
         UserContext context = InMemoryDatabaseHelper.CreateInMemoryContext();
         AirlineUserRepository repository = new AirlineUserRepository(context);
         AirlineUserCreateService service = new AirlineUserCreateService(repository);
-        
+
         _context = context;
         _repository = repository;
         _service = service;
@@ -38,7 +40,7 @@ public class AirlineUserCreateServiceTests : IDisposable
     public async Task CreateAirlineUserAsync_ShouldCreateUserAndReturnId()
     {
         // Arrange
-        AirlineUserCreateRequest request = new ()
+        AirlineUserCreateRequest request = new()
         {
             Email = "novo@example.com",
             Password = "senha123",
@@ -52,7 +54,7 @@ public class AirlineUserCreateServiceTests : IDisposable
 
         // Assert
         result.Should().BeGreaterThan(0);
-        
+
         AirlineUser? savedUser = await _context.AirlineUsers.FindAsync(result);
         savedUser.Should().NotBeNull();
         savedUser!.Email.Should().Be(request.Email);
@@ -66,7 +68,7 @@ public class AirlineUserCreateServiceTests : IDisposable
     public async Task CreateAirlineUserAsync_ShouldSaveDataCorrectlyInDatabase()
     {
         // Arrange
-        AirlineUserCreateRequest request = new ()
+        AirlineUserCreateRequest request = new()
         {
             Email = "teste@example.com",
             Password = "senhaSegura",
@@ -80,7 +82,7 @@ public class AirlineUserCreateServiceTests : IDisposable
 
         // Assert
         userId.Should().BeGreaterThan(0);
-        
+
         AirlineUser? savedUser = _context.AirlineUsers.FirstOrDefault(u => u.AirlineUserId == userId);
         savedUser.Should().NotBeNull();
         savedUser!.Email.Should().Be(request.Email);
@@ -98,7 +100,7 @@ public class AirlineUserCreateServiceTests : IDisposable
         string email, string password, string document, string name, string lastName)
     {
         // Arrange
-        AirlineUserCreateRequest request = new ()
+        AirlineUserCreateRequest request = new()
         {
             Email = email,
             Password = password,
@@ -112,7 +114,7 @@ public class AirlineUserCreateServiceTests : IDisposable
 
         // Assert
         result.Should().BeGreaterThan(0);
-        
+
         AirlineUser? savedUser = await _context.AirlineUsers.FindAsync(result);
         savedUser.Should().NotBeNull();
         savedUser!.Email.Should().Be(email);
@@ -135,7 +137,7 @@ public class AirlineUserCreateServiceTests : IDisposable
 
         // Act
         List<int> userIds = [];
-        foreach (AirlineUserCreateRequest request in requests)
+        foreach(AirlineUserCreateRequest request in requests)
         {
             int id = await _service.CreateAirlineUserAsync(request);
             userIds.Add(id);
@@ -144,7 +146,7 @@ public class AirlineUserCreateServiceTests : IDisposable
         // Assert
         userIds.Should().HaveCount(3);
         userIds.Should().OnlyHaveUniqueItems();
-        
+
         List<AirlineUser> allUsers = _context.AirlineUsers.ToList();
         allUsers.Should().HaveCount(3);
     }

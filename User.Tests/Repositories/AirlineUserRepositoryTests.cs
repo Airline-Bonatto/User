@@ -1,10 +1,12 @@
 using FluentAssertions;
+
 using User.api.Database;
 using User.api.DTOs;
 using User.api.Models;
 using User.api.Repositories;
 using User.api.Requests;
 using User.Tests.Helpers;
+
 using Xunit;
 
 namespace User.Tests.Repositories;
@@ -18,7 +20,7 @@ public class AirlineUserRepositoryTests : IDisposable
     {
         UserContext context = InMemoryDatabaseHelper.CreateInMemoryContext();
         AirlineUserRepository repository = new(context);
-        
+
         _context = context;
         _repository = repository;
     }
@@ -32,7 +34,7 @@ public class AirlineUserRepositoryTests : IDisposable
     public async Task AddAsync_ShouldAddUserAndReturnId()
     {
         // Arrange
-        AirlineUserCreateRequest request = new ()
+        AirlineUserCreateRequest request = new()
         {
             Email = "teste@example.com",
             Password = "senha123",
@@ -40,7 +42,7 @@ public class AirlineUserRepositoryTests : IDisposable
             Name = "João",
             LastName = "Silva"
         };
-        AirlineUser airlineUser = new (request);
+        AirlineUser airlineUser = new(request);
 
         // Act
         int userId = await _repository.AddAsync(airlineUser);
@@ -48,7 +50,7 @@ public class AirlineUserRepositoryTests : IDisposable
         // Assert
         userId.Should().BeGreaterThan(0);
         airlineUser.AirlineUserId.Should().Be(userId);
-        
+
         AirlineUser? savedUser = await _context.AirlineUsers.FindAsync(userId);
         savedUser.Should().NotBeNull();
         savedUser!.Email.Should().Be(request.Email);
@@ -61,7 +63,7 @@ public class AirlineUserRepositoryTests : IDisposable
     public async Task GetByCredentialsAsync_ShouldReturnUserWhenCredentialsAreCorrect()
     {
         // Arrange
-        AirlineUser user = new ()
+        AirlineUser user = new()
         {
             Email = "usuario@example.com",
             Password = "senhaSegura123",
@@ -71,7 +73,7 @@ public class AirlineUserRepositoryTests : IDisposable
         };
         await _repository.AddAsync(user);
 
-        AuthenticationDto authDto = new ()
+        AuthenticationDto authDto = new()
         {
             Username = "usuario@example.com",
             Password = "senhaSegura123"
@@ -92,7 +94,7 @@ public class AirlineUserRepositoryTests : IDisposable
     public async Task GetByCredentialsAsync_ShouldReturnNullWhenEmailIsIncorrect()
     {
         // Arrange
-        AirlineUser user = new ()
+        AirlineUser user = new()
         {
             Email = "correto@example.com",
             Password = "senha123",
@@ -102,7 +104,7 @@ public class AirlineUserRepositoryTests : IDisposable
         };
         await _repository.AddAsync(user);
 
-        AuthenticationDto authDto = new ()
+        AuthenticationDto authDto = new()
         {
             Username = "incorreto@example.com",
             Password = "senha123"
@@ -119,7 +121,7 @@ public class AirlineUserRepositoryTests : IDisposable
     public async Task GetByCredentialsAsync_ShouldReturnNullWhenPasswordIsIncorrect()
     {
         // Arrange
-        AirlineUser user = new ()
+        AirlineUser user = new()
         {
             Email = "teste@example.com",
             Password = "senhaCorreta",
@@ -129,7 +131,7 @@ public class AirlineUserRepositoryTests : IDisposable
         };
         await _repository.AddAsync(user);
 
-        AuthenticationDto authDto = new ()
+        AuthenticationDto authDto = new()
         {
             Username = "teste@example.com",
             Password = "senhaErrada"
@@ -146,7 +148,7 @@ public class AirlineUserRepositoryTests : IDisposable
     public async Task AddAsync_ShouldAllowAddingMultipleUsers()
     {
         // Arrange
-        AirlineUser user1 = new ()
+        AirlineUser user1 = new()
         {
             Email = "usuario1@example.com",
             Password = "senha1",
@@ -155,7 +157,7 @@ public class AirlineUserRepositoryTests : IDisposable
             LastName = "Um"
         };
 
-        AirlineUser user2 = new ()
+        AirlineUser user2 = new()
         {
             Email = "usuario2@example.com",
             Password = "senha2",
@@ -172,7 +174,7 @@ public class AirlineUserRepositoryTests : IDisposable
         id1.Should().NotBe(id2);
         id1.Should().BeGreaterThan(0);
         id2.Should().BeGreaterThan(0);
-        
+
         List<AirlineUser> allUsers = _context.AirlineUsers.ToList();
         allUsers.Should().HaveCount(2);
     }

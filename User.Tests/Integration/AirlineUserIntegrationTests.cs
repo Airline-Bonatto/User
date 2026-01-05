@@ -1,9 +1,11 @@
 using FluentAssertions;
+
 using User.api.Models;
 using User.api.Repositories;
 using User.api.Requests;
 using User.api.Services;
 using User.Tests.Helpers;
+
 using Xunit;
 
 namespace User.Tests.Integration;
@@ -101,7 +103,7 @@ public class AirlineUserIntegrationTests : IDisposable
 
         // Act - Criar múltiplos usuários
         var userIds = new List<int>();
-        foreach (var request in requests)
+        foreach(var request in requests)
         {
             var id = await _service.CreateAirlineUserAsync(request);
             userIds.Add(id);
@@ -112,7 +114,7 @@ public class AirlineUserIntegrationTests : IDisposable
         userIds.Should().OnlyHaveUniqueItems();
 
         // Act & Assert - Buscar cada usuário individualmente
-        for (int i = 0; i < requests.Length; i++)
+        for(int i = 0; i < requests.Length; i++)
         {
             var authDto = new api.DTOs.AuthenticationDto
             {
@@ -120,7 +122,7 @@ public class AirlineUserIntegrationTests : IDisposable
                 Password = requests[i].Password
             };
             var user = await _repository.GetByCredentialsAsync(authDto);
-            
+
             user.Should().NotBeNull();
             user!.AirlineUserId.Should().Be(userIds[i]);
             user.Email.Should().Be(requests[i].Email);
@@ -178,7 +180,7 @@ public class AirlineUserIntegrationTests : IDisposable
             new AirlineUser { Email = "c@test.com", Password = "pass", Document = "333", Name = "C", LastName = "User" }
         };
 
-        foreach (var user in users)
+        foreach(var user in users)
         {
             await _repository.AddAsync(user);
         }
@@ -195,7 +197,7 @@ public class AirlineUserIntegrationTests : IDisposable
         foundUser.Should().NotBeNull();
         foundUser!.Email.Should().Be("b@test.com");
         foundUser.Name.Should().Be("B");
-        
+
         // Verificar que todos os usuários ainda existem
         var allUsers = _context.AirlineUsers.ToList();
         allUsers.Should().HaveCount(3);
