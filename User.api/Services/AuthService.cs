@@ -37,7 +37,7 @@ public class AuthService(
             Token = token
         };
     }
-    
+
     private string CreateToken(int userId)
     {
         SymmetricSecurityKey key = new(Encoding.ASCII.GetBytes(_jwtConfig.Secret));

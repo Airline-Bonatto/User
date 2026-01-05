@@ -37,13 +37,13 @@ public class AirlineUserController(
         try
         {
             AuthResponse? authResponse = await _authService.Login(authDto);
-            if (authResponse == null)
+            if(authResponse == null)
             {
                 return Unauthorized(new { Message = "Invalid credentials" });
             }
             return Ok(authResponse);
         }
-        catch (Exception ex)
+        catch(Exception ex)
         {
             return StatusCode(500, new { Message = "Internal server error", Details = ex.Message });
         }

@@ -28,6 +28,11 @@ public class AirlineUser
     [Column("lastName")]
     public string LastName { get; set; } = string.Empty;
 
+    [Column("userTypeId")]
+    public int UserTypeId { get; set; }
+
+    public virtual UserType? UserType { get; set; }
+
 
     public AirlineUser()
     {
@@ -40,5 +45,6 @@ public class AirlineUser
         Document = request.Document;
         Name = request.Name;
         LastName = request.LastName;
+        UserTypeId = 1;
     }
 }
